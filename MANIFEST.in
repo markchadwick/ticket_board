@@ -1,0 +1,3 @@
+include ticket_board/config/deployment.ini_tmpl
+recursive-include ticket_board/public *
+recursive-include ticket_board/templates *
