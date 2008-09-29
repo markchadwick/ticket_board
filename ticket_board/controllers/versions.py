@@ -57,8 +57,9 @@ class VersionsController(BaseController):
         version    = ticket_store.get_version(id, project_id)
 
         c.version = version
+        c.issues  = version.issues()
         
-        return "Version: %s" % str(version)
+        return render('/versions/show.mako')
 
     def edit(self, id, format='html'):
         """GET /versions/id;edit: Form to edit an existing item."""

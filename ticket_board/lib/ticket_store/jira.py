@@ -49,3 +49,12 @@ class JiraTicketStore(TicketStore):
         for version_id, version_name, version_released in self._get_versions(project_id):
             if version_id == id:
                 return version_id, version_name, version_released
+                
+    def _get_issues(self, version_id):
+        for issue in self._connection.jira1.getIssuesFromTextSearchWithProject(
+                                            self._auth,
+                                            [version_id],
+                                            '',
+                                            100
+                                            ):
+            yield issue

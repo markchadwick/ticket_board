@@ -8,12 +8,6 @@ class TicketStore(object):
         self.username = username
         self.password = password
         
-    def login(self):
-        pass
-        
-    def logout(self):
-        pass
-        
     def get_projects(self):
         for id, name in self._get_projects():
             yield Project(self, id, name)
@@ -28,8 +22,12 @@ class TicketStore(object):
             
     def get_version(self, id, project_id):
         id, name, released = self._get_version(id, project_id)
-        return Version(id, name, project_id, released)
-        
+        return Version(self, id, name, project_id, released)
+
+    def get_issues(self, version_id):
+        for issue in self._get_issues(version_id):
+            yield issue
+
 # ------------------------------------------------------------------------------
 # Project
 # ------------------------------------------------------------------------------
@@ -53,11 +51,16 @@ class Project(object):
 
 class Version(object):
     def __init__(self, store, id, name, project_id, released=False):
-        self.name   = name
+        self.store  = store
         self.id     = id
+        self.name   = name
         
         self.project_id = project_id 
         self.released   = released
+
+    def issues(self):
+        for issue in self.store.get_issues(self.id):
+            yield issue
 
     def __repr__(self):
         return "[Version %s: %s]" % (str(self.id), str(self.name))
@@ -68,6 +71,6 @@ class Version(object):
 
 def get_ticket_store():
     from ticket_board.lib.ticket_store.jira import JiraTicketStore
-    store = JiraTicketStore('localhost', 8080, username='mark', password='imim42')
+    store = JiraTicketStore('localhost', 8080, username='', password='')
     store.login()
     return store
