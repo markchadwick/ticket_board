@@ -18,6 +18,8 @@ def make_map():
     map.connect('/error/{action}', controller='error')
     map.connect('/error/{action}/{id}', controller='error')
 
+    map.resource('project', 'projects')
+    map.resource('version', 'versions')
     map.resource('ticket', 'tickets')
 
     map.connect('/{controller}/{action}')

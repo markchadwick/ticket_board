@@ -1,2 +1,4 @@
 *.pyc
 ticket_board.egg-info
+data
+build
